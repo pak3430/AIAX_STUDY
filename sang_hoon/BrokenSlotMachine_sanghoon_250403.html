@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>슬롯 돌리기</title>
+</head>
+<body>
+    <div>
+        <h1>슬롯 돌리기</h1>
+        <div>
+            <div id="slot1">🍀</div>
+            <div id="slot2">⭐</div>
+            <div id="slot3">⛄</div>
+        </div>
+        <div>
+            <button onclick="spinSlot()">돌리기!</button>
+            <p id="message">행운을 빕니다!</p>
+        </div>
+    </div>
+
+    <script>
+        const symbols = ["🍀", "⭐", "⛄", "💘", "🐬"];
+        let isSpinning = false;
+
+        function spinSlot() { //여기는 슬롯을 돌리기위한 함수로 잡았습니다.
+            if (isSpinning) return; // 중복 실행 방지하기위해 반환값을 넣었습니다.(isSpinning이 true일때는 실행되지 않음)
+            document.getElementById("message").textContent = "돌리는 중...";
+            isSpinning = true;
+
+            let spins = 0;
+            const maxSpins = 20; // 회전 횟수는 20개로 설정했습니다.
+
+            const interval = setInterval(() => {
+                document.getElementById("slot1").textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                document.getElementById("slot2").textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                document.getElementById("slot3").textContent = symbols[Math.floor(Math.random() * symbols.length)];
+
+                spins++;
+                if (spins >= maxSpins) {
+                    clearInterval(interval);
+                    checkWin();
+                    isSpinning = false;
+                }
+            }, 250); // 0.25초마다 슬롯 변경
+        }
+
+        function checkWin() {
+            const reel1 = document.getElementById("reel1").textContent;
+            const reel2 = document.getElementById("reel2").textContent;
+            const reel3 = document.getElementById("reel3").textContent;
+
+            if ((reel1 == reel2) && (reel2 == reel3)) {
+                document.getElementById("message").textContent = "아싸 잭팟팟!";
+            } else if ((reel1 == reel2) || (reel2 == reel3) || (reel1 == reel3)) {
+                document.getElementById("message").textContent = "좋았어! 2개!";
+            } else {
+                document.getElementById("message").textContent = "ㅠㅠㅠ, 다시 시도해보세요!";
+            }
+        }
+    </script>
+</body>
+</html>
